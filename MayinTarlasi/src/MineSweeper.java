@@ -90,7 +90,9 @@ public class MineSweeper {
                 System.out.print("Enter Column: ");
                 int guessedColumn = input.nextInt();
 
-                if (placedBoard[guessedRow - 1][guessedColumn - 1].equals("-")) {
+                if (guessedRow > row || guessedColumn > column || guessedColumn < 1 || guessedRow < 1) {
+                    System.out.println("Please enter a valid index!");
+                } else if (placedBoard[guessedRow - 1][guessedColumn - 1].equals("-")) {
                     int r = guessedRow - 1;
                     int c = guessedColumn - 1;
                     int count = 0; // Mine counter and control section
