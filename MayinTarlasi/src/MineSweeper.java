@@ -128,6 +128,8 @@ public class MineSweeper {
                         System.out.println();
                     }
                     System.out.println("==================================");
+                } else if (!placedBoard[guessedRow - 1][guessedColumn - 1].equals("-") && !placedBoard[guessedRow - 1][guessedColumn - 1].equals("*")){
+                    System.out.println("You can not enter same index!");
                 } else {
                     System.out.println("Boooom!!! You stepped on a mine!! Game Over!");
                     break;
