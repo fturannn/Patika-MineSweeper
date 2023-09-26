@@ -2,7 +2,7 @@ import java.util.Scanner;
 public class MineSweeper {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        int row, column, guessedRow, guessedColumn;
+        int row, column;
 
         System.out.println("Welcome to Mine Sweeper Game!");
         System.out.println("Please specify game board size");
