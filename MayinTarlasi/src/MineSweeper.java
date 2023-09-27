@@ -23,10 +23,10 @@ public class MineSweeper { // Değerlendirme 5: Proje, MineSweeper sınıfı iç
         placer(row, column, placedBoard); // Mayınlar istenilen sayıda ve rastgele bölgelere yerleştirilir.
         boardMaker(row, column, gameBoard); // Oyun tahtası oluşturulur.
 
-        run(row, column, placedBoard, gameBoard); // Değerlendirme 6: Bu metot ile oyun başlatılır ve kaybetme durumları kontrol edilir.
+        run(row, column, placedBoard, gameBoard); // Değerlendirme 6: Bu metot ile oyun başlatılır ve kazanma-kaybetme durumları kontrol edilir.
     }
 
-    /* Değerlendirme 8: Bu metot diziye toplam indeks sayısının 1/4'ü kadar rastgele bölgelere mayın yerleştirir.
+    /* Değerlendirme 8: Aşağıdaki metot diziye toplam indeks sayısının 1/4'ü kadar rastgele bölgelere mayın yerleştirir.
     Rastgele mayın yerleştirirken önceden mayın koyulup koyulmadığının kontrolü yapılır. Eğer bölgede mayın varsa farklı bölgeye yerleştirilir.
      */
     static void placer(int row, int column, String [][] placedBoard) {
@@ -70,7 +70,7 @@ public class MineSweeper { // Değerlendirme 5: Proje, MineSweeper sınıfı iç
         }
     }
 
-    // Değerlendirme 6 + 9 + 10 + 11 + 12 + 13 + 14 + 15: Oyun başlatılır ve tüm durumların kontrolü bu metot ile sağlanır.
+    // Değerlendirme 6, 9, 10, 11, 12, 13, 14, 15: Oyun başlatılır ve tüm durumların kontrolü bu metot ile sağlanır.
     static void run(int row, int column, String [][] placedBoard, String [][] gameBoard) {
         Scanner input = new Scanner(System.in);
         while (true) {
@@ -83,7 +83,7 @@ public class MineSweeper { // Değerlendirme 5: Proje, MineSweeper sınıfı iç
                 }
             }
 
-            if (checkGame == 0) { // Değerlendirme 14 + 15: Tüm noktalar mayınsız bir şekilde seçilirse oyunu kazanmanın kontrolü burada yapılıyor. Kazanılırsa mesaj yazdırılır.
+            if (checkGame == 0) { // Değerlendirme 14 + 15: Tüm noktalar mayınsız bir şekilde seçilirse oyunu kazanmanın kontrolü burada yapılır. Kazanılırsa mesaj yazdırılır.
                 System.out.println("You win! Congratulations!");
                 break;
             } else {
@@ -95,7 +95,7 @@ public class MineSweeper { // Değerlendirme 5: Proje, MineSweeper sınıfı iç
 
                 if (guessedRow > row || guessedColumn > column || guessedColumn < 1 || guessedRow < 1) { // Değerlendirme 10: Kullanıcının seçtiği nokta, dizinin sınırları içerisinde olup olmadığı burada kontrol edilir.
                     System.out.println("You have entered beyond the boundaries of the game board!! Please enter a valid index!");
-                } else if (placedBoard[guessedRow - 1][guessedColumn - 1].equals("-")) { // Değerlendirme 11: Kullanıcı her hamle yaptığında oyun alanı burada güncelleniyor.
+                } else if (placedBoard[guessedRow - 1][guessedColumn - 1].equals("-")) { // Değerlendirme 11: Kullanıcı her hamle yaptığında oyun alanı burada güncellenir.
                     int r = guessedRow - 1;
                     int c = guessedColumn - 1;
                     int count = 0; 
