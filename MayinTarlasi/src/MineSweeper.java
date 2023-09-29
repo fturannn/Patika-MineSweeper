@@ -1,36 +1,22 @@
 import java.util.Scanner;
-public class MineSweeper { // Değerlendirme 5: Proje, MineSweeper sınıfı içerisinde tanımlanır.
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        int row, column;
+public class MineSweeper { // Değerlendirme 5
+    private int row;
+    private int column;
+    private String [][] gameBoard;
+    private String [][] placedBoard;
 
-        System.out.println("Welcome to Mine Sweeper Game!");
-        System.out.println("Please specify game board size");
+    MineSweeper (int row, int column, String [][] gameBoard, String [][] placedBoard) {
+        this.row = row;
+        this.column = column;
+        this.gameBoard = gameBoard;
+        this.placedBoard = placedBoard;
+        int mines = row * column / 4; // Değerlendirme 8: Burada toplam indeks sayısının 1/4'ü kadar mayın oluşturulur.
 
-        // Değerlendirme 7: Dizi (Matris) boyutu kullanıcı tarafından aşağıdaki kod bloğunda belirlenir.
-        System.out.print("Number of rows: ");
-        row = input.nextInt();
-
-        System.out.print("Number of columns: ");
-        column = input.nextInt();
-
-        System.out.println("Game board size is specified " + row + "x" + column);
-
-        String [][] gameBoard = new String[row][column];
-        String [][] placedBoard = new String[row][column];
-
-        System.out.println("Location of the Mines");
-        placer(row, column, placedBoard); // Mayınlar istenilen sayıda ve rastgele bölgelere yerleştirilir.
-        boardMaker(row, column, gameBoard); // Oyun tahtası oluşturulur.
-
-        run(row, column, placedBoard, gameBoard); // Değerlendirme 6: Bu metot ile oyun başlatılır ve kazanma-kaybetme durumları kontrol edilir.
-    }
-
-    /* Değerlendirme 8: Aşağıdaki metot diziye toplam indeks sayısının 1/4'ü kadar rastgele bölgelere mayın yerleştirir.
-    Rastgele mayın yerleştirirken önceden mayın koyulup koyulmadığının kontrolü yapılır. Eğer bölgede mayın varsa farklı bölgeye yerleştirilir.
-     */
-    static void placer(int row, int column, String [][] placedBoard) {
-        int mines = row * column / 4;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                gameBoard[i][j] = "-";
+            }
+        }
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
@@ -38,7 +24,7 @@ public class MineSweeper { // Değerlendirme 5: Proje, MineSweeper sınıfı iç
             }
         }
 
-        for (int i = 0; i < mines; i++) {
+        for (int i = 0; i < mines; i++) { // Değerlendirme 8: Burada oluşturulan mayınlar rastgele indekslere yerleştirilir.
             int mineRow = (int) (Math.random() * row);
             int mineColumn = (int) (Math.random() * column);
             if (placedBoard[mineRow][mineColumn].equals("*")) {
@@ -62,81 +48,74 @@ public class MineSweeper { // Değerlendirme 5: Proje, MineSweeper sınıfı iç
         System.out.println("==================================");
     }
 
-    static void boardMaker(int row, int column, String [][] gameBoard) { // Değerlendirme 6: Oyun tahtası oluşturulur
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                gameBoard[i][j] = "-";
-            }
-        }
-    }
-
-    // Değerlendirme 6, 9, 10, 11, 12, 13, 14, 15: Oyun başlatılır ve tüm durumların kontrolü bu metot ile sağlanır.
-    static void run(int row, int column, String [][] placedBoard, String [][] gameBoard) {
+    void run() { // Bu metot değerlendirme 6, 9, 10, 11, 12, 13, 14 ve 15'i kapsar.
         Scanner input = new Scanner(System.in);
         while (true) {
-            int checkGame = 0; // Eğer checkGame = 0 ise oyun kazanılmıştır. Mayınlı harita üzerinden kontrol sağlanır.
-            for (int i = 0; i < row; i++) {
-                for (int j = 0; j < column; j++) {
-                    if (placedBoard[i][j].equals("-")) {
+            int checkGame = 0;
+            for (int i = 0; i < this.row; i++) { // Değerlendirme 14
+                for (int j = 0; j < this.column; j++) {
+                    if (this.placedBoard[i][j].equals("-")) {
                         checkGame++;
                     }
                 }
             }
 
-            if (checkGame == 0) { // Değerlendirme 14 + 15: Tüm noktalar mayınsız bir şekilde seçilirse oyunu kazanmanın kontrolü burada yapılır. Kazanılırsa mesaj yazdırılır.
-                System.out.println("You win! Congratulations!");
+            if (checkGame == 0) { // Değerlendirme 14: Burada tüm noktalar mayınsız bir şekilde seçilirse oyunu kazanmanın kontrolü yapılır. checkGame = 0 ise win, checkGame != 0 ise oyuna devam et.
+                System.out.println("You win! Congratulations!"); // Değerlendirme 15: Burada kullanıcının oyunu kaybetme ya da kazanma durumunda uygun mesajlar kullanıcıya gösterilir.
                 break;
             } else {
-                System.out.print("Enter row: "); // Değerlendirme 9: Kullanıcıdan işaretlemek istediği satır değeri burada alınır.
+                System.out.print("Enter row: "); // Değerlendirme 9: Burada kullanıcıdan işaretlemek istediği satır ve sütun bilgisi alınır.
                 int guessedRow = input.nextInt();
 
-                System.out.print("Enter Column: "); // Değerlendirme 9: Kullanıcıdan işaretlemek istediği sütun değeri burada alınır.
+                System.out.print("Enter Column: ");
                 int guessedColumn = input.nextInt();
 
-                if (guessedRow > row || guessedColumn > column || guessedColumn < 1 || guessedRow < 1) { // Değerlendirme 10: Kullanıcının seçtiği nokta, dizinin sınırları içerisinde olup olmadığı burada kontrol edilir.
+                // Değerlendirme 10: Burada kullanıcının seçtiği nokta dizinin sınırları içerisinde olup olmadığı kontrol edilir,
+                //değilse uyarı mesajı verilir ve tekrar giriş istenir.
+                if (guessedRow > this.row || guessedColumn > this.column || guessedColumn < 1 || guessedRow < 1) {
                     System.out.println("You have entered beyond the boundaries of the game board!! Please enter a valid index!");
-                } else if (placedBoard[guessedRow - 1][guessedColumn - 1].equals("-")) { // Değerlendirme 11: Kullanıcı her hamle yaptığında oyun alanı burada güncellenir.
+                } else if (this.placedBoard[guessedRow - 1][guessedColumn - 1].equals("-")) {
                     int r = guessedRow - 1;
                     int c = guessedColumn - 1;
-                    int count = 0; 
-                    if (r - 1 >= 0 && c - 1 >= 0 && placedBoard[r - 1][c - 1].equals("*")) {
+                    int count = 0;
+                    if (r - 1 >= 0 && c - 1 >= 0 && this.placedBoard[r - 1][c - 1].equals("*")) {
                         count++;
                     }
-                    if (r - 1 >= 0 && placedBoard[r - 1][c].equals("*")) {
+                    if (r - 1 >= 0 && this.placedBoard[r - 1][c].equals("*")) {
                         count++;
                     }
-                    if (r - 1 >= 0 && c + 1 <= column - 1 && placedBoard[r - 1][c + 1].equals("*")) {
+                    if (r - 1 >= 0 && c + 1 <= this.column - 1 && this.placedBoard[r - 1][c + 1].equals("*")) {
                         count++;
                     }
-                    if (c - 1 >= 0 && placedBoard[r][c - 1].equals("*")) {
+                    if (c - 1 >= 0 && this.placedBoard[r][c - 1].equals("*")) {
                         count++;
                     }
-                    if (c + 1 <= column - 1 && placedBoard[r][c + 1].equals("*")) {
+                    if (c + 1 <= this.column - 1 && this.placedBoard[r][c + 1].equals("*")) {
                         count++;
                     }
-                    if (c - 1 >= 0 && r + 1 <= row - 1 && placedBoard[r + 1][c - 1].equals("*")) {
+                    if (c - 1 >= 0 && r + 1 <= this.row - 1 && this.placedBoard[r + 1][c - 1].equals("*")) {
                         count++;
                     }
-                    if (r + 1 <= row - 1 && placedBoard[r + 1][c].equals("*")) {
+                    if (r + 1 <= this.row - 1 && this.placedBoard[r + 1][c].equals("*")) {
                         count++;
                     }
-                    if (r + 1 <= row - 1 && c + 1 <= column - 1 && placedBoard[r + 1][c + 1].equals("*")) {
+                    if (r + 1 <= this.row - 1 && c + 1 <= this.column - 1 && this.placedBoard[r + 1][c + 1].equals("*")) {
                         count++;
                     }
-                    gameBoard[r][c] = String.valueOf(count);
-                    placedBoard[r][c] = String.valueOf(count);
+                    this.gameBoard[r][c] = String.valueOf(count); // Değerlendirme 11, 12: Buradaki kod satırları ile kullanıcı her hamle yaptığında oyun alanı güncellenir.
+                    this.placedBoard[r][c] = String.valueOf(count);
 
-                    for (int i = 0; i < row; i++) { // Değerlendirme 12: Girilen noktada mayın yoksa etrafındaki mayın sayısı veya 0 değeri burada yerine yazılıyor.
-                        for (int j = 0; j < column; j++) {
-                            System.out.print(gameBoard[i][j] + " ");
+                    for (int i = 0; i < this.row; i++) { // Değerlendirme 11, 12: Burada girilen noktada mayın yoksa etrafındaki mayın sayısı veya 0 değeri yerine yazılır.
+                        for (int j = 0; j < this.column; j++) {
+                            System.out.print(this.gameBoard[i][j] + " ");
                         }
                         System.out.println();
                     }
                     System.out.println("==================================");
-                } else if (!placedBoard[guessedRow - 1][guessedColumn - 1].equals("-") && !placedBoard[guessedRow - 1][guessedColumn - 1].equals("*")){ // Öncekilerle aynı index değeri girilirse burada uyarı mesajı verilir.
+                } else if (!this.placedBoard[guessedRow - 1][guessedColumn - 1].equals("-") && !this.placedBoard[guessedRow - 1][guessedColumn - 1].equals("*")){
                     System.out.println("You can not enter same index!");
-                } else {
-                    System.out.println("Boooom!!! You stepped on a mine!! Game Over!"); // Değerlendirme 13 + 15: Kullanıcı mayına bastığında oyunu kaybedecek şekilde kontrol yapılır ve mesaj yazdırılır.
+                } else { // Burada kullanıcı mayına bastığında oyunu kaybedecek şekilde kontrol yapılır.
+                    System.out.println("Boooom!!! You stepped on a mine!! Game Over!"); // // Değerlendirme 15: Burada kullanıcının oyunu kaybetme ya da kazanma durumunda uygun mesajlar kullanıcıya gösterilir.
                     break;
                 }
             }
