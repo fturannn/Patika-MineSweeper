@@ -1,9 +1,9 @@
 import java.util.Scanner;
 public class MineSweeper { // Değerlendirme 5
-    private int row;
-    private int column;
-    private String [][] gameBoard;
-    private String [][] placedBoard;
+    private final int row;
+    private final int column;
+    private final String [][] gameBoard;
+    private final String [][] placedBoard;
 
     MineSweeper (int row, int column, String [][] gameBoard, String [][] placedBoard) {
         this.row = row;
